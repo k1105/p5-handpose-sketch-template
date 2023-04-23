@@ -1,6 +1,6 @@
 ## Overview
 
-p5.js で tensorflow が提供する[hand-pose-detection](https://blog.tensorflow.org/2021/11/3D-handpose.html)モデルを使用できるよう作成したフレームワーク.プロジェクトファイル内に存在する sketch ファイルを編集することで容易に手指の動きを用いたインタラクティブなクリエイティブコーディングが可能なほか, 生のデータを平滑化した滑らかな手指の動きなどを使用できる関数群を提供する.
+p5.js で tensorflow が提供する[hand-pose-detection](https://blog.tensorflow.org/2021/11/3D-handpose.html)モデルを使用できるよう作成したフレームワーク.プロジェクトファイル内に存在する sketch ファイルを編集することで容易に手指の動きを用いたインタラクティブなクリエイティブコーディングが可能なほか, 生のデータを平滑化した滑らかな手指の動きなどを使用できる関数群を提供する. <br/>
 [Try out the live DEMO!](https://p5-handpose-sketch-template.vercel.app/)
 
 ![keyshot](img/keyshot.png)
