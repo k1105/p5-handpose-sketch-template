@@ -6,7 +6,7 @@ p5.js で tensorflow が提供する[hand-pose-detection](https://blog.tensorflo
 ## Getting Started
 
 本フレームワークの動作には node.js が必要です。Next.js のインストール手順は
-Mac: [Mac に Node.js をインストール](https://qiita.com/kyosuke5_20/items/c5f68fc9d89b84c0df09)
+Mac: [Mac に Node.js をインストール](https://qiita.com/kyosuke5_20/items/c5f68fc9d89b84c0df09)　<br/>
 Windows: [Node.js をインストールする](https://qiita.com/sefoo0104/items/0653c935ea4a4db9dc2b)
 
 1. github のリポジトリから最新版のプロジェクトをダウンロードする.安定版は releases 一覧から最新のものを選択, 最新のものは「Code > Download ZIP」を選択. ダウンロード後, zip ファイルを展開する.
