@@ -13,10 +13,14 @@ Mac: [Mac に Node.js をインストール](https://qiita.com/kyosuke5_20/items
 Windows: [Node.js をインストールする](https://qiita.com/sefoo0104/items/0653c935ea4a4db9dc2b)
 
 1. github のリポジトリから最新版のプロジェクトをダウンロードする.安定版は releases 一覧から最新のものを選択, 最新のものは「Code > Download ZIP」を選択. ダウンロード後, zip ファイルを展開する.
-   ![release](img/release.png "releasesから安定版をダウンロード")
-   ![download-zip](img/download-zip.png "Code > Download ZIPから最新版をダウンロード")
 
-2. ターミナル（コマンドプロンプト）でダウンロードしてきたディレクトリに移動し,以下を実行.
+releases から安定版をダウンロード:
+　　<img src="img/release.png" width="50%">
+
+Code > Download ZIP から最新版をダウンロード:
+<img src="img/download-zip.png.png" width="50%">
+
+1. ターミナル（コマンドプロンプト）でダウンロードしてきたディレクトリに移動し,以下を実行.
 
 ```bash
 npm install
