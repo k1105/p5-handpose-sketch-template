@@ -32,10 +32,14 @@ yarn dev
 
 描画に関連する関数は次のとおり：
 
-### getShapedRawHandpose (rawHands: handPoseDetection.Hand[]) => {left: handPoseDetection.Hand[], right: handPoseDetection.Hand[]}
+### getShapedRawHandpose
+
+(rawHands: handPoseDetection.Hand[]) => {left: handPoseDetection.Hand[], right: handPoseDetection.Hand[]}
 
 - tensorflow によって取得された手指の動きを, 左手, 右手といった形で呼び出せるよう整形された形式で取得できる関数. 引数に tensorflow から取得してきた手指の姿勢情報をそのまま入力する.
 
-### getSmoothedHandpose (rawHands: handPodeDetection.Hand[], handposeHistory: {left: handPoseDetection.Hand[][], right: handPoseDetection.Hand[][]})
+### getSmoothedHandpose
+
+(rawHands: handPodeDetection.Hand[], handposeHistory: {left: handPoseDetection.Hand[][], right: handPoseDetection.Hand[][]})
 
 - 手指の動きを, 前後 5 フレーム分の情報を用いて平滑化したものを取得できる関数.tensorflow から取得してきた手指の姿勢情報に加え, これまでの姿勢情報を持つ `handposeHistory` を渡す必要がある.また, `handposeHistory` を使用するためには`updateHandposeHistory()`関数を用いて毎フレーム`handposeHistory`を更新する必要がある.
