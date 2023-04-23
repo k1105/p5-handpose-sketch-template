@@ -37,9 +37,6 @@ export default function App() {
 
     if (ready) {
       requestRef.current = requestAnimationFrame(capture); //captureを実施
-    } else {
-      //not working
-      requestRef.current = null;
     }
   }, [ready]);
 
@@ -69,11 +66,6 @@ export default function App() {
   useEffect(() => {
     if (ready) {
       requestRef.current = requestAnimationFrame(capture);
-    } else {
-      if (requestRef.current) {
-        console.log("cancel");
-        cancelAnimationFrame(requestRef.current); //not working
-      }
     }
   }, [capture, ready]);
 
