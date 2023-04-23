@@ -30,13 +30,17 @@ yarn install
 
 ### 実行について
 
-同じくダウンロードしてきたディレクトリ内で, 以下を実行. [http://localhost:3000](http://localhost:3000)にて実行結果を確認.
+同じくダウンロードしてきたディレクトリ内で, 以下を実行. 
 
 ```bash
 npm run dev
 # or
 yarn dev
 ```
+
+[http://localhost:3000](http://localhost:3000)にて実行結果を確認.
+
+### 編集について
 
 カンバス内を編集していく場合は, `sketch/HandSketch.tsx`を編集する.<br/>
 [p5.js](https://p5js.org/)で記述できるが, p5 の関数や p5 特有の変数（カンバスサイズを有する width, height 変数や, textAlign を指定する際の CENTER といったオプションなど）を使用する際は, その先頭に`p5`をつける必要があることに注意.
