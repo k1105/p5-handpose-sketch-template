@@ -20,7 +20,7 @@ releases から安定版をダウンロード:<br/>
 Code > Download ZIP から最新版をダウンロード:<br/>
 <img src="img/download-zip.png" width="50%">
 
-1. ターミナル（コマンドプロンプト）でダウンロードしてきたディレクトリに移動し,以下を実行.
+2. ターミナル（コマンドプロンプト）でダウンロードしてきたディレクトリに移動し,以下を実行.
 
 ```bash
 npm install
