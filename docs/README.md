@@ -14,11 +14,11 @@ Windows: [Node.js をインストールする](https://qiita.com/sefoo0104/items
 
 1. github のリポジトリから最新版のプロジェクトをダウンロードする.安定版は releases 一覧から最新のものを選択, 最新のものは「Code > Download ZIP」を選択. ダウンロード後, zip ファイルを展開する.
 
-releases から安定版をダウンロード:
+releases から安定版をダウンロード:<br/>
 　　<img src="img/release.png" width="50%">
 
-Code > Download ZIP から最新版をダウンロード:
-<img src="img/download-zip.png.png" width="50%">
+Code > Download ZIP から最新版をダウンロード:<br/>
+<img src="img/download-zip.png" width="50%">
 
 1. ターミナル（コマンドプロンプト）でダウンロードしてきたディレクトリに移動し,以下を実行.
 
