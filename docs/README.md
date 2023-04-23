@@ -1,3 +1,6 @@
+p5.js で tensorflow が提供する[hand-pose-detection](https://blog.tensorflow.org/2021/11/3D-handpose.html)モデルを使用できるよう作成したフレームワーク.プロジェクトファイル内に存在する sketch ファイルを編集することで容易に手指の動きを用いたインタラクティブなクリエイティブコーディングが可能なほか, 生のデータを平滑化した滑らかな手指の動きなどを使用できる関数群を提供する.
+![keyshot](img/keyshot.png)
+
 本アプリケーションは [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/) のもとで公開しています。適切なクレジット表記のもと、商用利用含めご自由に利用ください。ご連絡は不要です。
 
 ## Getting Started
@@ -34,11 +37,15 @@ yarn dev
 
 ### getShapedRawHandpose
 
+---
+
 (rawHands: handPoseDetection.Hand[]) => {left: handPoseDetection.Hand[], right: handPoseDetection.Hand[]}
 
 - tensorflow によって取得された手指の動きを, 左手, 右手といった形で呼び出せるよう整形された形式で取得できる関数. 引数に tensorflow から取得してきた手指の姿勢情報をそのまま入力する.
 
 ### getSmoothedHandpose
+
+---
 
 (rawHands: handPodeDetection.Hand[], handposeHistory: {left: handPoseDetection.Hand[][], right: handPoseDetection.Hand[][]})
 
