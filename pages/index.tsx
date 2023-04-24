@@ -52,10 +52,6 @@ export default function App() {
         model,
         detectorConfig
       );
-      modelRef.current = await handPoseDetection.createDetector(
-        model,
-        detectorConfig
-      );
     };
 
     load();
