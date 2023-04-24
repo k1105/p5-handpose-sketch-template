@@ -5,8 +5,6 @@ p5.js で tensorflow が提供する[hand-pose-detection](https://blog.tensorflo
 
 ![keyshot](img/keyshot.png)
 
-本アプリケーションは [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/) のもとで公開しています。適切なクレジット表記のもと、商用利用含めご自由に利用ください。ご連絡は不要です。
-
 ## Getting Started
 
 本フレームワークの動作には node.js が必要です。Next.js のインストール手順は <br/>
