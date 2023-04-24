@@ -95,4 +95,5 @@ const getSmoothedHandpose: (
 
 注意事項としては,
 
-- `index.tsx`での`predictionsRef`の更新と`HandSketch.tsx`での`predictionsRef`の読み出しは独立した処理であるため, 更新がされる前に何度も呼び出される, また逆に, 呼び出されることなく新しい姿勢情報に更新される, といったことが起こる可能性がある. -`predictionsRef.current`の戻り値は空配列になることがあるため, 描画の際は空配列を受け取った場合の処理について記述しておく必要がある.
+- `index.tsx`での`predictionsRef`の更新と`HandSketch.tsx`での`predictionsRef`の読み出しは独立した処理であるため, 更新がされる前に何度も呼び出される, また逆に, 呼び出されることなく新しい姿勢情報に更新される, といったことが起こる可能性がある.
+- `predictionsRef.current`の戻り値は空配列になることがあるため, 描画の際は空配列を受け取った場合の処理について記述しておく必要がある.
