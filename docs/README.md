@@ -46,6 +46,14 @@ yarn dev
 カンバス内を編集していく場合は, `sketch/HandSketch.tsx`を編集する.<br/>
 [p5.js](https://p5js.org/)で記述できるが, p5 の関数や p5 特有の変数（カンバスサイズを有する width, height 変数や, textAlign を指定する際の CENTER といったオプションなど）を使用する際は, その先頭に`p5`をつける必要があることに注意.
 
+## Hand landmarks
+手指の各特徴点については次のような番号が割り当てられている. <br/>
+（[MediaPipeのドキュメント](https://developers.google.com/mediapipe/solutions/vision/hand_landmarker)から転載.）
+
+![hand-landmarks](https://developers.google.com/static/mediapipe/images/solutions/hand-landmarks.png)
+
+例えば人差し指の動きだけを取得したい場合は、番号5~8の特徴点を取得する.
+
 ## 関数について
 
 描画に関連する関数は次のとおり：
