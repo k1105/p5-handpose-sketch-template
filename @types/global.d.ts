@@ -1,9 +1,6 @@
-import p5Types from "p5";
 import * as handPoseDetection from "@tensorflow-models/hand-pose-detection";
-
-type SketchProps = {
-  p5: p5Types;
-  hands: handPoseDetection.Keypoint[][];
+declare type Hand = handPoseDetection.Keypoint[];
+declare type Hands = {
+  left: Hand;
+  right: Hand;
 };
-
-type Lost = { state: boolean; prev: boolean; at: number };

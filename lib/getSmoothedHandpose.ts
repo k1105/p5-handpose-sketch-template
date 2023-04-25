@@ -1,26 +1,28 @@
-import * as handPoseDetection from "@tensorflow-models/hand-pose-detection";
+import { Keypoint } from "@tensorflow-models/hand-pose-detection";
 import { calcAverageKeypoints } from "./calcAverageKeypoints";
 
+type Hand = Keypoint[];
+type Hands = {
+  left: Hand;
+  right: Hand;
+};
+
 export const getSmoothedHandpose = (
-  rawHands: handPoseDetection.Hand[],
+  rawHands: Hands,
   keyframes: {
-    left: handPoseDetection.Keypoint[][];
-    right: handPoseDetection.Keypoint[][];
+    left: Hand[];
+    right: Hand[];
   }
 ) => {
-  const hands: {
-    left: handPoseDetection.Keypoint[];
-    right: handPoseDetection.Keypoint[];
-  } = { left: [], right: [] };
-  for (let index = 0; index < rawHands.length; index++) {
-    //認識されている手の数分ループする（0~2）.
-    if (rawHands[index].handedness == "Left") {
-      //左手
-      hands.left = calcAverageKeypoints(keyframes.left);
-    } else {
-      //右手
-      hands.right = calcAverageKeypoints(keyframes.right);
-    }
+  const hands: Hands = { left: [], right: [] };
+  if (rawHands.left.length > 0) {
+    //左手
+    hands.left = calcAverageKeypoints(keyframes.left);
   }
+  if (rawHands.right.length > 0) {
+    //右手
+    hands.right = calcAverageKeypoints(keyframes.right);
+  }
+
   return hands;
 };

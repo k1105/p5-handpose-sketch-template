@@ -5,10 +5,16 @@ import * as handPoseDetection from "@tensorflow-models/hand-pose-detection";
 import { getSmoothedHandpose } from "../lib/getSmoothedHandpose";
 import { updateHandposeHistory } from "../lib/updateHandposeHistory";
 import { Keypoint } from "@tensorflow-models/hand-pose-detection";
-import { getShapedRawHandpose } from "../lib/getShapedRawHandpose";
+import { shapeHandpose } from "../lib/shapeHandpose";
 
 type Props = {
   handpose: MutableRefObject<handPoseDetection.Hand[]>;
+};
+
+type Hand = Keypoint[];
+type Hands = {
+  left: Hand;
+  right: Hand;
 };
 
 const Sketch = dynamic(import("react-p5"), {
@@ -18,8 +24,8 @@ const Sketch = dynamic(import("react-p5"), {
 
 export const HandSketch = ({ handpose }: Props) => {
   let handposeHistory: {
-    left: Keypoint[][];
-    right: Keypoint[][];
+    left: Hand[];
+    right: Hand[];
   } = { left: [], right: [] };
 
   const preload = (p5: p5Types) => {
@@ -34,9 +40,9 @@ export const HandSketch = ({ handpose }: Props) => {
   };
 
   const draw = (p5: p5Types) => {
-    handposeHistory = updateHandposeHistory(handpose.current, handposeHistory); //handposeHistoryの更新
-    // const hands = getShapedRawHandpose(handpose.current); //平滑化されていない手指の動きを使用する
-    const hands = getSmoothedHandpose(handpose.current, handposeHistory); //平滑化された手指の動きを取得する
+    const rawHands: Hands = shapeHandpose(handpose.current); //平滑化されていない手指の動きを使用する
+    handposeHistory = updateHandposeHistory(rawHands, handposeHistory); //handposeHistoryの更新
+    const hands: Hands = getSmoothedHandpose(rawHands, handposeHistory); //平滑化された手指の動きを取得する
 
     p5.background(1, 25, 96);
     p5.push();

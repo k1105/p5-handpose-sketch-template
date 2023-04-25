@@ -1,25 +1,31 @@
-import * as handPoseDetection from "@tensorflow-models/hand-pose-detection";
+import { Keypoint } from "@tensorflow-models/hand-pose-detection";
+
+type Hand = Keypoint[];
+type Hands = {
+  left: Hand;
+  right: Hand;
+};
 
 export const updateHandposeHistory = (
-  handpose: handPoseDetection.Hand[],
+  rawHands: Hands,
   handposeHistory: {
-    left: handPoseDetection.Keypoint[][];
-    right: handPoseDetection.Keypoint[][];
+    left: Hand[];
+    right: Hand[];
   }
 ) => {
-  for (let index = 0; index < handpose.length; index++) {
-    //認識されている手の数分ループする（0~2）.
-    if (handpose[index].handedness == "Left") {
-      handposeHistory.left.push(handpose[index].keypoints);
-      if (handposeHistory.left.length > 5) {
-        handposeHistory.left.shift();
-      }
-    } else if (handpose[index].handedness == "Right") {
-      handposeHistory.right.push(handpose[index].keypoints);
-      if (handposeHistory.right.length > 5) {
-        handposeHistory.right.shift();
-      }
+  //認識されている手の数分ループする（0~2）.
+  if (rawHands.left.length > 0) {
+    handposeHistory.left.push(rawHands.left);
+    if (handposeHistory.left.length > 5) {
+      handposeHistory.left.shift();
     }
   }
+  if (rawHands.right.length > 0) {
+    handposeHistory.right.push(rawHands.right);
+    if (handposeHistory.right.length > 5) {
+      handposeHistory.right.shift();
+    }
+  }
+
   return handposeHistory;
 };
