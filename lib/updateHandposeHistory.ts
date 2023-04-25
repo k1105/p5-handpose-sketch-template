@@ -1,16 +1,16 @@
 import { Keypoint } from "@tensorflow-models/hand-pose-detection";
 
-type Hand = Keypoint[];
-type Hands = {
-  left: Hand;
-  right: Hand;
+type Handpose = Keypoint[];
+type Handposes = {
+  left: Handpose;
+  right: Handpose;
 };
 
 export const updateHandposeHistory = (
-  rawHands: Hands,
+  rawHands: Handposes,
   handposeHistory: {
-    left: Hand[];
-    right: Hand[];
+    left: Handpose[];
+    right: Handpose[];
   }
 ) => {
   //認識されている手の数分ループする（0~2）.

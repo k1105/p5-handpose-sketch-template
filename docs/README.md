@@ -44,7 +44,7 @@ yarn dev
 カンバス内を編集していく場合は, `sketch/HandSketch.tsx`を編集する.<br/>
 [p5.js](https://p5js.org/)で記述できるが, p5 の関数や p5 特有の変数（カンバスサイズを有する width, height 変数や, textAlign を指定する際の CENTER といったオプションなど）を使用する際は, その先頭に`p5`をつける必要があることに注意.
 
-## Hand landmarks
+## Handpose landmarks
 
 手指の各特徴点については次のような番号が割り当てられている. <br/>
 （[MediaPipe のドキュメント](https://developers.google.com/mediapipe/solutions/vision/hand_landmarker)から転載.）
@@ -54,12 +54,14 @@ yarn dev
 例えば人差し指の動きだけを取得したい場合は、番号 5~8 の特徴点を取得する.
 
 ## 型について
-本テンプレートはp5jsでの描画に特化したテンプレートであるため、手指の情報については、①保持する情報を描画に必要なキーポイントの情報のみに限定し、②右手と左手が区別された手指の姿勢を直接呼び出すことが可能な型定義を独自に行なった。独自に行なった型`Hand`, 並びに`Hands`は以下のようになっている。
+
+本テンプレートは p5js での描画に特化したテンプレートであるため、手指の情報については、① 保持する情報を描画に必要なキーポイントの情報のみに限定し、② 右手と左手が区別された手指の姿勢を直接呼び出すことが可能な型定義を独自に行なった。独自に行なった型`Handpose`, 並びに`Handposes`は以下のようになっている。
+
 ```tsx
-type Hand = handPoseDetection.Keypoint[];
-type Hands = {
-  left: Hand;
-  right: Hand;
+type Handpose = handPoseDetection.Keypoint[];
+type Handposes = {
+  left: Handpose;
+  right: Handpose;
 };
 ```
 
@@ -71,9 +73,9 @@ type Hands = {
 
 ```typescript
 const shapeHandpose: (hands: handPoseDetection.Hand[]) => {
-    left: Hand;
-    right: Hand;
-}
+  left: Handpose;
+  right: Handpose;
+};
 ```
 
 - tensorflow によって取得された手指の動きを, 左手, 右手といった形で呼び出せるよう整形された形式で取得できる関数. 引数に tensorflow から取得してきた手指の姿勢情報をそのまま入力する.
@@ -81,10 +83,13 @@ const shapeHandpose: (hands: handPoseDetection.Hand[]) => {
 ### getSmoothedHandpose
 
 ```typescript
-const getSmoothedHandpose: (rawHands: Hands, keyframes: {
-    left: Hand[];
-    right: Hand[];
-}) => Hands
+const getSmoothedHandpose: (
+  rawHands: Handposes,
+  keyframes: {
+    left: Handpose[];
+    right: Handpose[];
+  }
+) => Handposes;
 ```
 
 - 手指の動きを, 前後 5 フレーム分の情報を用いて平滑化したものを取得できる関数.tensorflow から取得してきた手指の姿勢情報に加え, これまでの姿勢情報を持つ `handposeHistory` を渡す必要がある.また, `handposeHistory` を使用するためには`updateHandposeHistory()`関数を用いて毎フレーム`handposeHistory`を更新する必要がある.

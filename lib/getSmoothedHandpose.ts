@@ -1,20 +1,20 @@
 import { Keypoint } from "@tensorflow-models/hand-pose-detection";
 import { calcAverageKeypoints } from "./calcAverageKeypoints";
 
-type Hand = Keypoint[];
-type Hands = {
-  left: Hand;
-  right: Hand;
+type Handpose = Keypoint[];
+type Handposes = {
+  left: Handpose;
+  right: Handpose;
 };
 
 export const getSmoothedHandpose = (
-  rawHands: Hands,
+  rawHands: Handposes,
   keyframes: {
-    left: Hand[];
-    right: Hand[];
+    left: Handpose[];
+    right: Handpose[];
   }
 ) => {
-  const hands: Hands = { left: [], right: [] };
+  const hands: Handposes = { left: [], right: [] };
   if (rawHands.left.length > 0) {
     //左手
     hands.left = calcAverageKeypoints(keyframes.left);
