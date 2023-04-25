@@ -1,9 +1,7 @@
-import * as handPoseDetection from "@tensorflow-models/hand-pose-detection";
+import { Keypoint } from "@tensorflow-models/hand-pose-detection";
 
-export const calcAverageKeypoints = (
-  keyarr: handPoseDetection.Keypoint[][]
-) => {
-  const keys: handPoseDetection.Keypoint[] = [];
+export const calcAverageKeypoints = (keyarr: Keypoint[][]) => {
+  const keys: Keypoint[] = [];
   if (keyarr.length > 0) {
     for (let i = 0; i < 21; i++) {
       let totalWeight = 0;

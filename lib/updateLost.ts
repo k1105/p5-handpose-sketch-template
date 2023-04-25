@@ -1,7 +1,7 @@
-import * as handPoseDetection from "@tensorflow-models/hand-pose-detection";
+import { Hand } from "@tensorflow-models/hand-pose-detection";
 
 export const updateLost = (
-  rawHands: handPoseDetection.Hand[],
+  rawHands: Hand[],
   lost: { state: boolean; prev: boolean; at: number }
 ) => {
   lost.prev = lost.state;

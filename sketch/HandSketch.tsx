@@ -1,14 +1,14 @@
 import dynamic from "next/dynamic";
 import p5Types from "p5";
 import { MutableRefObject } from "react";
-import * as handPoseDetection from "@tensorflow-models/hand-pose-detection";
+import { Hand } from "@tensorflow-models/hand-pose-detection";
 import { getSmoothedHandpose } from "../lib/getSmoothedHandpose";
 import { updateHandposeHistory } from "../lib/updateHandposeHistory";
 import { Keypoint } from "@tensorflow-models/hand-pose-detection";
 import { shapeHandpose } from "../lib/shapeHandpose";
 
 type Props = {
-  handpose: MutableRefObject<handPoseDetection.Hand[]>;
+  handpose: MutableRefObject<Hand[]>;
 };
 
 type Handpose = Keypoint[];
