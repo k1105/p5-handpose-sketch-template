@@ -55,10 +55,18 @@ yarn dev
 
 ## 型について
 
-本テンプレートは p5js での描画に特化したテンプレートであるため、手指の情報については、① 保持する情報を描画に必要なキーポイントの情報のみに限定し、② 右手と左手が区別された手指の姿勢を直接呼び出すことが可能な型定義を独自に行なった。独自に行なった型`Handpose`, 並びに`Handposes`は以下のようになっている。
+本テンプレートは p5js での描画に特化したテンプレートであるため、手指の情報については、① 保持する情報を描画に必要なキーポイントの情報のみに限定し、② 右手と左手が区別された手指の姿勢を直接呼び出すことが可能な型定義を独自に行なった。独自に行なった型`Handpose`, 並びに`DevidedHandpose`は以下のようになっている。
 
 ```tsx
 type Handpose = handPoseDetection.Keypoint[];
+type DevidedHandpose = {
+  wrist: Keypoint;
+  thumb: Keypoint[];
+  index: Keypoint[];
+  middle: Keypoint[];
+  ring: Keypoint[];
+  pinky: Keypoint[];
+};
 ```
 
 ## 関数について
