@@ -53,36 +53,38 @@ yarn dev
 
 例えば人差し指の動きだけを取得したい場合は、番号 5~8 の特徴点を取得する.
 
+## 型について
+本テンプレートはp5jsでの描画に特化したテンプレートであるため、手指の情報については、①保持する情報を描画に必要なキーポイントの情報のみに限定し、②右手と左手が区別された手指の姿勢を直接呼び出すことが可能な型定義を独自に行なった。独自に行なった型`Hand`, 並びに`Hands`は以下のようになっている。
+```tsx
+type Hand = handPoseDetection.Keypoint[];
+type Hands = {
+  left: Hand;
+  right: Hand;
+};
+```
+
 ## 関数について
 
 描画に関連する関数は次のとおり：
 
-### getShapedRawHandpose
+### shapeHandpose
 
 ```typescript
-const getShapedRawHandpose: (rawHands: handPoseDetection.Hand[]) => {
-  left: handPoseDetection.Keypoint[];
-  right: handPoseDetection.Keypoint[];
-};
+const shapeHandpose: (hands: handPoseDetection.Hand[]) => {
+    left: Hand;
+    right: Hand;
+}
 ```
-
-(rawHands: handPoseDetection.Hand[]) => {left: handPoseDetection.Hand[], right: handPoseDetection.Hand[]}
 
 - tensorflow によって取得された手指の動きを, 左手, 右手といった形で呼び出せるよう整形された形式で取得できる関数. 引数に tensorflow から取得してきた手指の姿勢情報をそのまま入力する.
 
 ### getSmoothedHandpose
 
 ```typescript
-const getSmoothedHandpose: (
-  rawHands: handPoseDetection.Hand[],
-  keyframes: {
-    left: handPoseDetection.Keypoint[][];
-    right: handPoseDetection.Keypoint[][];
-  }
-) => {
-  left: handPoseDetection.Keypoint[];
-  right: handPoseDetection.Keypoint[];
-};
+const getSmoothedHandpose: (rawHands: Hands, keyframes: {
+    left: Hand[];
+    right: Hand[];
+}) => Hands
 ```
 
 - 手指の動きを, 前後 5 フレーム分の情報を用いて平滑化したものを取得できる関数.tensorflow から取得してきた手指の姿勢情報に加え, これまでの姿勢情報を持つ `handposeHistory` を渡す必要がある.また, `handposeHistory` を使用するためには`updateHandposeHistory()`関数を用いて毎フレーム`handposeHistory`を更新する必要がある.
