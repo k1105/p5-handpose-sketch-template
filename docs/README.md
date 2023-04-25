@@ -59,20 +59,16 @@ yarn dev
 
 ```tsx
 type Handpose = handPoseDetection.Keypoint[];
-type Handposes = {
-  left: Handpose;
-  right: Handpose;
-};
 ```
 
 ## 関数について
 
 描画に関連する関数は次のとおり：
 
-### shapeHandpose
+### convertHandToHandpose
 
 ```typescript
-const shapeHandpose: (hands: handPoseDetection.Hand[]) => {
+const convertHandToHandpose: (hands: handPoseDetection.Hand[]) => {
   left: Handpose;
   right: Handpose;
 };
@@ -84,7 +80,10 @@ const shapeHandpose: (hands: handPoseDetection.Hand[]) => {
 
 ```typescript
 const getSmoothedHandpose: (
-  rawHands: Handposes,
+  rawHands{
+  left: Handpose;
+  right: Handpose;
+},
   keyframes: {
     left: Handpose[];
     right: Handpose[];

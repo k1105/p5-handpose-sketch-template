@@ -1,13 +1,12 @@
 import { Keypoint } from "@tensorflow-models/hand-pose-detection";
 
 type Handpose = Keypoint[];
-type Handposes = {
-  left: Handpose;
-  right: Handpose;
-};
 
 export const updateHandposeHistory = (
-  rawHands: Handposes,
+  rawHands: {
+    left: Handpose;
+    right: Handpose;
+  },
   handposeHistory: {
     left: Handpose[];
     right: Handpose[];
