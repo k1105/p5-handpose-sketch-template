@@ -1,5 +1,5 @@
 import { Keypoint } from "@tensorflow-models/hand-pose-detection";
-import { calcAverageKeypoints } from "./calcAverageKeypoints";
+import { calcAverageKeypoints } from "./calculator/calcAverageKeypoints";
 
 type Handpose = Keypoint[];
 

@@ -101,6 +101,8 @@ const getSmoothedHandpose: (
 
 - 手指の動きを, 前後 5 フレーム分の情報を用いて平滑化したものを取得できる関数.tensorflow から取得してきた手指の姿勢情報に加え, これまでの姿勢情報を持つ `handposeHistory` を渡す必要がある.また, `handposeHistory` を使用するためには`updateHandposeHistory()`関数を用いて毎フレーム`handposeHistory`を更新する必要がある.
 
+他の関数についての説明は[Docs](https://ripple-shock-17d.notion.site/99222f8ac8f0478b89e1c4bdbc814930?v=2be059aa50cd47cdbd854bc224d707ce)を参照。
+
 ## 構成
 
 `index.tsx`上で Detector を作成（非同期）し, 作成完了と同時に sketch ファイルが読み込まれる. 手指の姿勢推定を行う処理が記述されているのも同じく`index.tsx`であり, 更新されるたびに`predictionsRef`に新規の姿勢が格納される. `sketch/HandSketch.tsx`ではこの値を毎フレーム読みにいき, 読み込まれた最新の姿勢情報を用いて描画処理を行う.
@@ -111,3 +113,7 @@ const getSmoothedHandpose: (
 
 - `index.tsx`での`predictionsRef`の更新と`HandSketch.tsx`での`predictionsRef`の読み出しは独立した処理であるため, 更新がされる前に何度も呼び出される, また逆に, 呼び出されることなく新しい姿勢情報に更新される, といったことが起こる可能性がある.
 - `predictionsRef.current`の戻り値は空配列になることがあるため, 描画の際は空配列を受け取った場合の処理について記述しておく必要がある.
+
+### Docs
+
+[notion](https://ripple-shock-17d.notion.site/99222f8ac8f0478b89e1c4bdbc814930?v=2be059aa50cd47cdbd854bc224d707ce)
