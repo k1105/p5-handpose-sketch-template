@@ -6,6 +6,8 @@ import { getSmoothedHandpose } from "../lib/getSmoothedHandpose";
 import { updateHandposeHistory } from "../lib/updateHandposeHistory";
 import { Keypoint } from "@tensorflow-models/hand-pose-detection";
 import { convertHandToHandpose } from "../lib/convertHandToHandpose";
+import { dotHand } from "../lib/p5/dotHand";
+import { lineHand } from "../lib/p5/lineHand";
 
 type Props = {
   handpose: MutableRefObject<Hand[]>;
@@ -59,27 +61,21 @@ export const HandSketch = ({ handpose }: Props) => {
     if (hands.left.length > 0) {
       p5.push();
       p5.translate(p5.width / 2 - 300, p5.height / 2 + 50);
-      p5.noStroke();
-      for (let i = 0; i < 21; i++) {
-        p5.ellipse(
-          hands.left[i].x - hands.left[0].x,
-          hands.left[i].y - hands.left[0].y,
-          10
-        );
-      }
+      dotHand({
+        p5,
+        hand: hands.left,
+        dotSize: 10,
+      });
       p5.pop();
     }
     if (hands.right.length > 0) {
       p5.push();
       p5.translate(p5.width / 2 + 300, p5.height / 2 + 50);
-      p5.noStroke();
-      for (let i = 0; i < 21; i++) {
-        p5.ellipse(
-          hands.right[i].x - hands.right[0].x,
-          hands.right[i].y - hands.right[0].y,
-          10
-        );
-      }
+      dotHand({
+        p5,
+        hand: hands.right,
+        dotSize: 10,
+      });
       p5.pop();
     }
   };
