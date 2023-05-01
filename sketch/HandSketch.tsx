@@ -7,8 +7,7 @@ import { updateHandposeHistory } from "../lib/updateHandposeHistory";
 import { Keypoint } from "@tensorflow-models/hand-pose-detection";
 import { convertHandToHandpose } from "../lib/converter/convertHandToHandpose";
 import { dotHand } from "../lib/p5/dotHand";
-import { lineHand } from "../lib/p5/lineHand";
-import { giftwrap } from "../lib/calculator/giftwrap";
+import { isFront } from "../lib/calculator/isFront";
 
 type Props = {
   handpose: MutableRefObject<Hand[]>;
@@ -61,6 +60,7 @@ export const HandSketch = ({ handpose }: Props) => {
     p5.pop();
     if (hands.left.length > 0) {
       p5.push();
+      // isFront(hands.left, "left") ? p5.fill(255, 0, 0) : p5.fill(0, 0, 255); //表裏判定
       p5.translate(p5.width / 2 - 300, p5.height / 2 + 50);
       dotHand({
         p5,
