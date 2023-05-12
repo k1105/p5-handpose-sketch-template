@@ -31,16 +31,3 @@ body {
     helvetica neue, helvetica, ubuntu, roboto, noto, segoe ui, arial, sans-serif;
   color: #dcdcdc;
 }
-
-li {
-  margin: 5px;
-  margin-bottom: 20px;
-  font-size: 0.8rem;
-}
-
-p {
-  margin: 5px;
-  margin-bottom: 20px;
-  margin-left: 30px;
-  font-size: 0.8rem;
-}

@@ -3,6 +3,7 @@ import "@tensorflow/tfjs";
 import * as handPoseDetection from "@tensorflow-models/hand-pose-detection";
 import Webcam from "react-webcam";
 import { HandSketch } from "../sketch/HandSketch";
+import { DebugSketch } from "../sketch/DebugSketch";
 import { PixelInput } from "@tensorflow-models/hand-pose-detection/dist/shared/calculators/interfaces/common_interfaces";
 import Head from "next/head";
 
@@ -74,7 +75,12 @@ export default function App() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {ready && <HandSketch handpose={predictionsRef} />}
+      {ready && (
+        <>
+          {/* <DebugSketch handpose={predictionsRef} /> */}
+          <HandSketch handpose={predictionsRef} />
+        </>
+      )}
       <div
         style={{
           position: "absolute",

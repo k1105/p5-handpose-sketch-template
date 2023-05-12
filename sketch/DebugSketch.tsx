@@ -3,11 +3,13 @@ import p5Types from "p5";
 import { MutableRefObject } from "react";
 import { Hand } from "@tensorflow-models/hand-pose-detection";
 import { getSmoothedHandpose } from "../lib/getSmoothedHandpose";
+import { resizeHandpose } from "../lib/converter/resizeHandpose";
 import { updateHandposeHistory } from "../lib/updateHandposeHistory";
 import { Keypoint } from "@tensorflow-models/hand-pose-detection";
 import { convertHandToHandpose } from "../lib/converter/convertHandToHandpose";
 import { dotHand } from "../lib/p5/dotHand";
-import { isFront } from "../lib/calculator/isFront";
+import Webcam from "react-webcam";
+import { lineHand } from "../lib/p5/lineHand";
 
 type Props = {
   handpose: MutableRefObject<Hand[]>;
@@ -20,7 +22,7 @@ const Sketch = dynamic(import("react-p5"), {
   ssr: false,
 });
 
-export const HandSketch = ({ handpose }: Props) => {
+export const DebugSketch = ({ handpose }: Props) => {
   let handposeHistory: {
     left: Handpose[];
     right: Handpose[];
@@ -38,6 +40,20 @@ export const HandSketch = ({ handpose }: Props) => {
   };
 
   const draw = (p5: p5Types) => {
+    p5.clear();
+
+    handpose.current.forEach((hand, index) => {
+      p5.push();
+      p5.noStroke();
+      p5.textAlign(p5.LEFT);
+      p5.text(
+        hand.handedness + ": " + hand.score,
+        p5.width - 330,
+        300 + 30 * index
+      );
+      p5.pop();
+    });
+
     const rawHands: {
       left: Handpose;
       right: Handpose;
@@ -46,35 +62,27 @@ export const HandSketch = ({ handpose }: Props) => {
     const hands: {
       left: Handpose;
       right: Handpose;
-    } = getSmoothedHandpose(rawHands, handposeHistory); //平滑化された手指の動きを取得する
+    } = rawHands;
 
-    p5.background(1, 25, 96);
-    p5.push();
-    p5.noStroke();
-    p5.textAlign(p5.CENTER);
-    p5.text(
-      "Edit Me in sketch/FingerSketch.tsx !",
-      p5.width / 2,
-      p5.height / 2
-    );
-    p5.pop();
     if (hands.left.length > 0) {
+      hands.left = resizeHandpose(hands.left, 3 / 4);
       p5.push();
-      p5.translate(p5.width / 2 - 300, p5.height / 2 + 50);
-      dotHand({
+      p5.translate(p5.width - 330 + hands.left[0].x, 30 + hands.left[0].y);
+      lineHand({
         p5,
         hand: hands.left,
-        dotSize: 10,
+        strokeWeight: 5,
       });
       p5.pop();
     }
     if (hands.right.length > 0) {
+      hands.right = resizeHandpose(hands.right, 3 / 4);
       p5.push();
-      p5.translate(p5.width / 2 + 300, p5.height / 2 + 50);
-      dotHand({
+      p5.translate(p5.width - 330 + hands.right[0].x, 30 + hands.right[0].y);
+      lineHand({
         p5,
         hand: hands.right,
-        dotSize: 10,
+        strokeWeight: 5,
       });
       p5.pop();
     }
@@ -86,12 +94,31 @@ export const HandSketch = ({ handpose }: Props) => {
 
   return (
     <>
-      <Sketch
-        preload={preload}
-        setup={setup}
-        draw={draw}
-        windowResized={windowResized}
-      />
+      <div style={{ position: "absolute", top: 0, left: 0, zIndex: 99 }}>
+        <Sketch
+          preload={preload}
+          setup={setup}
+          draw={draw}
+          windowResized={windowResized}
+        />
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          right: 30,
+          top: 30,
+          zIndex: 0,
+        }}
+      >
+        <Webcam //手指の動きを取得するのに必要なカメラ映像
+          width="300"
+          height="225"
+          mirrored
+          id="webcam"
+          audio={false}
+          screenshotFormat="image/jpeg"
+        />
+      </div>
     </>
   );
 };
