@@ -1,13 +1,11 @@
 import dynamic from "next/dynamic";
 import p5Types from "p5";
-import { MutableRefObject } from "react";
+import { MutableRefObject, useState } from "react";
 import { Hand } from "@tensorflow-models/hand-pose-detection";
-import { getSmoothedHandpose } from "../lib/getSmoothedHandpose";
 import { resizeHandpose } from "../lib/converter/resizeHandpose";
 import { updateHandposeHistory } from "../lib/updateHandposeHistory";
 import { Keypoint } from "@tensorflow-models/hand-pose-detection";
 import { convertHandToHandpose } from "../lib/converter/convertHandToHandpose";
-import { dotHand } from "../lib/p5/dotHand";
 import Webcam from "react-webcam";
 import { lineHand } from "../lib/p5/lineHand";
 
@@ -23,6 +21,7 @@ const Sketch = dynamic(import("react-p5"), {
 });
 
 export const DebugSketch = ({ handpose }: Props) => {
+  const [debugVisibility, setDebugVisibility] = useState<boolean>(false);
   let handposeHistory: {
     left: Handpose[];
     right: Handpose[];
@@ -47,7 +46,7 @@ export const DebugSketch = ({ handpose }: Props) => {
       p5.noStroke();
       p5.textAlign(p5.LEFT);
       p5.text(
-        hand.handedness + ": " + hand.score,
+        hand.handedness + " accuracy: " + hand.score,
         p5.width - 330,
         300 + 30 * index
       );
@@ -95,29 +94,53 @@ export const DebugSketch = ({ handpose }: Props) => {
   return (
     <>
       <div style={{ position: "absolute", top: 0, left: 0, zIndex: 99 }}>
-        <Sketch
-          preload={preload}
-          setup={setup}
-          draw={draw}
-          windowResized={windowResized}
-        />
-      </div>
-      <div
-        style={{
-          position: "absolute",
-          right: 30,
-          top: 30,
-          zIndex: 0,
-        }}
-      >
-        <Webcam //手指の動きを取得するのに必要なカメラ映像
-          width="300"
-          height="225"
-          mirrored
-          id="webcam"
-          audio={false}
-          screenshotFormat="image/jpeg"
-        />
+        <button
+          onClick={() => {
+            setDebugVisibility(!debugVisibility);
+          }}
+          style={{
+            position: "absolute",
+            top: "30px",
+            left: "30px",
+            width: "100px",
+            height: "30px",
+            background: !debugVisibility ? "rgba(0,0,0,0)" : "#fff",
+            border: "1px solid #ffffff",
+            color: debugVisibility ? "#011960" : "#fff",
+            borderRadius: "5px",
+          }}
+        >
+          {!debugVisibility ? "Show Monitor" : "Hide Monitor"}
+        </button>
+        {debugVisibility && (
+          <>
+            <Sketch
+              preload={preload}
+              setup={setup}
+              draw={draw}
+              windowResized={windowResized}
+            />
+          </>
+        )}
+        {debugVisibility && (
+          <div
+            style={{
+              position: "absolute",
+              right: 30,
+              top: 30,
+              zIndex: -1,
+            }}
+          >
+            <Webcam //手指の動きを取得するのに必要なカメラ映像
+              width="300"
+              height="225"
+              mirrored
+              id="webcam"
+              audio={false}
+              screenshotFormat="image/jpeg"
+            />
+          </div>
+        )}
       </div>
     </>
   );

@@ -53,7 +53,7 @@ export const HandSketch = ({ handpose }: Props) => {
       right: Handpose;
     } = getSmoothedHandpose(rawHands, handposeHistory); //平滑化された手指の動きを取得する
 
-    p5.background(1, 25, 96);
+    p5.clear();
     p5.push();
     p5.noStroke();
     p5.textAlign(p5.CENTER);
