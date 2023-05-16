@@ -13,6 +13,11 @@ type Props = {
   handpose: MutableRefObject<Hand[]>;
 };
 
+let leftHand: Keypoint[] = [];
+let rightHand: Keypoint[] = [];
+let leftHandOpacity: number = 0;
+let rightHandOpacity: number = 0;
+
 type Handpose = Keypoint[];
 
 const Sketch = dynamic(import("react-p5"), {
@@ -59,21 +64,38 @@ export const HandSketch = ({ handpose }: Props) => {
     );
     p5.pop();
     if (hands.left.length > 0) {
+      leftHand = hands.left;
+      leftHandOpacity = Math.min(255, leftHandOpacity + 255 / 10);
+    } else {
+      leftHandOpacity = Math.max(0, leftHandOpacity - 255 / 10);
+    }
+
+    if (leftHand.length > 0) {
       p5.push();
+      p5.fill(255, leftHandOpacity);
       p5.translate(p5.width / 2 - 300, p5.height / 2 + 50);
       dotHand({
         p5,
-        hand: hands.left,
+        hand: leftHand,
         dotSize: 10,
       });
       p5.pop();
     }
+
     if (hands.right.length > 0) {
+      rightHand = hands.right;
+      rightHandOpacity = Math.min(255, rightHandOpacity + 255 / 10);
+    } else {
+      rightHandOpacity = Math.max(0, rightHandOpacity - 255 / 10);
+    }
+
+    if (rightHand.length > 0) {
       p5.push();
+      p5.fill(255, rightHandOpacity);
       p5.translate(p5.width / 2 + 300, p5.height / 2 + 50);
       dotHand({
         p5,
-        hand: hands.right,
+        hand: rightHand,
         dotSize: 10,
       });
       p5.pop();

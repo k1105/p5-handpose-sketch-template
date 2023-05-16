@@ -14,7 +14,6 @@ export default function App() {
   const requestRef = useRef<null | number>(null);
   const [ready, setReady] = useState(false);
   const lostCountRef = useRef(0);
-  const isLost = useRef<boolean>(false);
   const sketchContainerRef = useRef<HTMLDivElement>(null);
   // const timer = 120000;
 
@@ -33,27 +32,8 @@ export default function App() {
           lostCountRef.current++;
         }
 
-        if (lostCountRef.current > 10) {
-          //predictionsRef.current = [];
-          isLost.current = true;
-        } else {
-          isLost.current = false;
-        }
-
-        if (sketchContainerRef.current !== null) {
-          sketchContainerRef.current.style.opacity = isLost.current
-            ? String(
-                Math.max(
-                  Number(sketchContainerRef.current.style.opacity) - 0.2,
-                  0
-                )
-              )
-            : String(
-                Math.min(
-                  Number(sketchContainerRef.current.style.opacity) + 0.2,
-                  1
-                )
-              );
+        if (lostCountRef.current > 5) {
+          predictionsRef.current = [];
         }
       }
     }
