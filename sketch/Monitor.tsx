@@ -11,6 +11,12 @@ import { lineHand } from "../lib/p5/lineHand";
 
 type Props = {
   handpose: MutableRefObject<Hand[]>;
+  debugLog: MutableRefObject<
+    {
+      label: string;
+      value: any;
+    }[]
+  >;
 };
 
 type Handpose = Keypoint[];
@@ -20,7 +26,7 @@ const Sketch = dynamic(import("react-p5"), {
   ssr: false,
 });
 
-export const DebugSketch = ({ handpose }: Props) => {
+export const Monitor = ({ handpose, debugLog }: Props) => {
   const [debugVisibility, setDebugVisibility] = useState<boolean>(false);
   let handposeHistory: {
     left: Handpose[];
@@ -41,17 +47,15 @@ export const DebugSketch = ({ handpose }: Props) => {
   const draw = (p5: p5Types) => {
     p5.clear();
 
-    handpose.current.forEach((hand, index) => {
-      p5.push();
-      p5.noStroke();
-      p5.textAlign(p5.LEFT);
-      p5.text(
-        hand.handedness + " accuracy: " + hand.score,
-        p5.width - 330,
-        300 + 30 * index
-      );
-      p5.pop();
-    });
+    p5.push();
+    p5.translate(p5.width - 330, 300);
+    p5.noStroke();
+    p5.textAlign(p5.LEFT);
+    for (const log of debugLog.current) {
+      p5.text(log.label + " : " + String(log.value), 0, 0);
+      p5.translate(0, 30);
+    }
+    p5.pop();
 
     const rawHands: {
       left: Handpose;

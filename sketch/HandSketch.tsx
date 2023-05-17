@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import p5Types from "p5";
-import { MutableRefObject } from "react";
+import { MutableRefObject, useRef } from "react";
 import { Hand } from "@tensorflow-models/hand-pose-detection";
 import { getSmoothedHandpose } from "../lib/getSmoothedHandpose";
 import { updateHandposeHistory } from "../lib/updateHandposeHistory";
@@ -8,6 +8,7 @@ import { Keypoint } from "@tensorflow-models/hand-pose-detection";
 import { convertHandToHandpose } from "../lib/converter/convertHandToHandpose";
 import { dotHand } from "../lib/p5/dotHand";
 import { isFront } from "../lib/calculator/isFront";
+import { Monitor } from "./Monitor";
 
 type Props = {
   handpose: MutableRefObject<Hand[]>;
@@ -31,6 +32,8 @@ export const HandSketch = ({ handpose }: Props) => {
     right: Handpose[];
   } = { left: [], right: [] };
 
+  const debugLog = useRef<{ label: string; value: any }[]>([]);
+
   const preload = (p5: p5Types) => {
     // 画像などのロードを行う
   };
@@ -52,6 +55,20 @@ export const HandSketch = ({ handpose }: Props) => {
       left: Handpose;
       right: Handpose;
     } = getSmoothedHandpose(rawHands, handposeHistory); //平滑化された手指の動きを取得する
+
+    // logとしてmonitorに表示する
+    debugLog.current = [];
+    for (const hand of handpose.current) {
+      debugLog.current.push({
+        label: hand.handedness + " accuracy",
+        value: hand.score,
+      });
+      debugLog.current.push({
+        label: hand.handedness + " is front",
+        //@ts-ignore
+        value: isFront(hand.keypoints, hand.handedness.toLowerCase()),
+      });
+    }
 
     p5.clear();
     p5.push();
@@ -108,6 +125,7 @@ export const HandSketch = ({ handpose }: Props) => {
 
   return (
     <>
+      <Monitor handpose={handpose} debugLog={debugLog} />
       <Sketch
         preload={preload}
         setup={setup}
