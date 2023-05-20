@@ -2,20 +2,25 @@ import { Hand, Keypoint } from "@tensorflow-models/hand-pose-detection";
 
 type Handpose = Keypoint[];
 
-export const convertHandToHandpose = (hands: Hand[]) => {
+export const convert3DKeypointsToHandpose = (hands: Hand[]) => {
   const shapedHands: {
     left: Handpose;
     right: Handpose;
   } = { left: [], right: [] };
-  console.log(hands);
+
   for (let index = 0; index < hands.length; index++) {
     //認識されている手の数分ループする（0~2）.
+    const handpose: Handpose = [];
+    for (const point of hands[index].keypoints3D as Keypoint[]) {
+      handpose.push({ x: point.x, y: point.y });
+    }
+
     if (hands[index].handedness == "Left") {
       //左手
-      shapedHands.left = hands[index].keypoints;
+      shapedHands.left = handpose;
     } else {
       //右手
-      shapedHands.right = hands[index].keypoints;
+      shapedHands.right = handpose;
     }
   }
   return shapedHands;
