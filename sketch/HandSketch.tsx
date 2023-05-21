@@ -9,8 +9,6 @@ import { convertHandToHandpose } from "../lib/converter/convertHandToHandpose";
 import { dotHand } from "../lib/p5/dotHand";
 import { isFront } from "../lib/calculator/isFront";
 import { Monitor } from "./Monitor";
-import { convert3DKeypointsToHandpose } from "../lib/converter/convert3DKeypointsToHandpose";
-import { resizeHandpose } from "../lib/converter/resizeHandpose";
 
 type Props = {
   handpose: MutableRefObject<Hand[]>;
@@ -51,7 +49,7 @@ export const HandSketch = ({ handpose }: Props) => {
     const rawHands: {
       left: Handpose;
       right: Handpose;
-    } = convert3DKeypointsToHandpose(handpose.current);
+    } = convertHandToHandpose(handpose.current);
     handposeHistory = updateHandposeHistory(rawHands, handposeHistory); //handposeHistoryの更新
     const hands: {
       left: Handpose;
@@ -95,7 +93,7 @@ export const HandSketch = ({ handpose }: Props) => {
       p5.translate(p5.width / 2 - 300, p5.height / 2 + 50);
       dotHand({
         p5,
-        hand: resizeHandpose(leftHand, 1000),
+        hand: leftHand,
         dotSize: 10,
       });
       p5.pop();
@@ -114,7 +112,7 @@ export const HandSketch = ({ handpose }: Props) => {
       p5.translate(p5.width / 2 + 300, p5.height / 2 + 50);
       dotHand({
         p5,
-        hand: resizeHandpose(rightHand, 1000),
+        hand: rightHand,
         dotSize: 10,
       });
       p5.pop();

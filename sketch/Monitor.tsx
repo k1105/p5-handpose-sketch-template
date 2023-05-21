@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import p5Types from "p5";
-import { MutableRefObject, useState } from "react";
+import { MutableRefObject, useRef, useState } from "react";
 import { Hand } from "@tensorflow-models/hand-pose-detection";
 import { resizeHandpose } from "../lib/converter/resizeHandpose";
 import { updateHandposeHistory } from "../lib/updateHandposeHistory";
@@ -27,6 +27,7 @@ const Sketch = dynamic(import("react-p5"), {
 });
 
 export const Monitor = ({ handpose, debugLog }: Props) => {
+  const logRef = useRef<HTMLDivElement>(null);
   const [debugVisibility, setDebugVisibility] = useState<boolean>(false);
   let handposeHistory: {
     left: Handpose[];
@@ -47,15 +48,14 @@ export const Monitor = ({ handpose, debugLog }: Props) => {
   const draw = (p5: p5Types) => {
     p5.clear();
 
-    p5.push();
-    p5.translate(p5.width - 330, 300);
-    p5.noStroke();
-    p5.textAlign(p5.LEFT);
-    for (const log of debugLog.current) {
-      p5.text(log.label + " : " + String(log.value), 0, 0);
-      p5.translate(0, 30);
+    if (logRef.current !== null) {
+      //ログ情報の描画
+      logRef.current.innerHTML = "";
+      for (const log of debugLog.current) {
+        logRef.current.innerHTML +=
+          "<p>" + log.label + " : " + String(log.value) + "</p>";
+      }
     }
-    p5.pop();
 
     const rawHands: {
       left: Handpose;
@@ -143,6 +143,7 @@ export const Monitor = ({ handpose, debugLog }: Props) => {
               audio={false}
               screenshotFormat="image/jpeg"
             />
+            <div ref={logRef} style={{ fontSize: "0.8rem" }} />
           </div>
         )}
       </div>
