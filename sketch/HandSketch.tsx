@@ -8,7 +8,8 @@ import { Keypoint } from "@tensorflow-models/hand-pose-detection";
 import { convertHandToHandpose } from "../lib/converter/convertHandToHandpose";
 import { dotHand } from "../lib/p5/dotHand";
 import { isFront } from "../lib/calculator/isFront";
-import { Monitor } from "./Monitor";
+import { Monitor } from "../components/Monitor";
+import { Recorder } from "../components/Recorder";
 
 type Props = {
   handpose: MutableRefObject<Hand[]>;
@@ -126,6 +127,7 @@ export const HandSketch = ({ handpose }: Props) => {
   return (
     <>
       <Monitor handpose={handpose} debugLog={debugLog} />
+      <Recorder handpose={handpose} />
       <Sketch
         preload={preload}
         setup={setup}

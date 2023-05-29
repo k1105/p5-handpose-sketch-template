@@ -3,7 +3,6 @@ import p5Types from "p5";
 import { MutableRefObject, useRef, useState } from "react";
 import { Hand } from "@tensorflow-models/hand-pose-detection";
 import { resizeHandpose } from "../lib/converter/resizeHandpose";
-import { updateHandposeHistory } from "../lib/updateHandposeHistory";
 import { Keypoint } from "@tensorflow-models/hand-pose-detection";
 import { convertHandToHandpose } from "../lib/converter/convertHandToHandpose";
 import Webcam from "react-webcam";
@@ -29,10 +28,6 @@ const Sketch = dynamic(import("react-p5"), {
 export const Monitor = ({ handpose, debugLog }: Props) => {
   const logRef = useRef<HTMLDivElement>(null);
   const [debugVisibility, setDebugVisibility] = useState<boolean>(false);
-  let handposeHistory: {
-    left: Handpose[];
-    right: Handpose[];
-  } = { left: [], right: [] };
 
   const preload = (p5: p5Types) => {
     // 画像などのロードを行う
@@ -61,7 +56,6 @@ export const Monitor = ({ handpose, debugLog }: Props) => {
       left: Handpose;
       right: Handpose;
     } = convertHandToHandpose(handpose.current); //平滑化されていない手指の動きを使用する
-    handposeHistory = updateHandposeHistory(rawHands, handposeHistory); //handposeHistoryの更新
     const hands: {
       left: Handpose;
       right: Handpose;

@@ -7,7 +7,6 @@ export const convertHandToHandpose = (hands: Hand[]) => {
     left: Handpose;
     right: Handpose;
   } = { left: [], right: [] };
-  console.log(hands);
   for (let index = 0; index < hands.length; index++) {
     //認識されている手の数分ループする（0~2）.
     if (hands[index].handedness == "Left") {
