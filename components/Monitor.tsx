@@ -3,7 +3,7 @@ import p5Types from "p5";
 import { MutableRefObject, useRef, useState } from "react";
 import { Hand } from "@tensorflow-models/hand-pose-detection";
 import { resizeHandpose } from "../lib/converter/resizeHandpose";
-import { Keypoint } from "@tensorflow-models/hand-pose-detection";
+import { Handpose } from "../@types/global";
 import { convertHandToHandpose } from "../lib/converter/convertHandToHandpose";
 import Webcam from "react-webcam";
 import { lineHand } from "../lib/p5/lineHand";
@@ -17,8 +17,6 @@ type Props = {
     }[]
   >;
 };
-
-import { Handpose } from "../../@types/global";
 
 const Sketch = dynamic(import("react-p5"), {
   loading: () => <></>,
