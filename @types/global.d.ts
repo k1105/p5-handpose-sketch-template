@@ -8,9 +8,3 @@ declare type DevidedHandpose = {
   ring: Keypoint[];
   pinky: Keypoint[];
 };
-declare type DisplayHands = {
-  left: Keypoint[];
-  leftOpacity: number;
-  right: Keypoint[];
-  rightOpacity: number;
-};

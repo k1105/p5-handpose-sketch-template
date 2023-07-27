@@ -3,36 +3,26 @@ import p5Types from "p5";
 import { MutableRefObject, useRef } from "react";
 import { Hand } from "@tensorflow-models/hand-pose-detection";
 import { getSmoothedHandpose } from "../lib/getSmoothedHandpose";
-import { updateHandposeHistory } from "../lib/updateHandposeHistory";
 import { convertHandToHandpose } from "../lib/converter/convertHandToHandpose";
 import { dotHand } from "../lib/p5/dotHand";
 import { isFront } from "../lib/calculator/isFront";
 import { Monitor } from "../components/Monitor";
 import { Recorder } from "../components/Recorder";
-import { Handpose, DisplayHands } from "../@types/global";
-import { updateDisplayHands } from "../lib/calculator/updateDisplayHands";
+import { Handpose } from "../@types/global";
+import { DisplayHands } from "../lib/DisplayHandsClass";
+import { HandposeHistory } from "../lib/HandposeHitsoryClass";
 
 type Props = {
   handpose: MutableRefObject<Hand[]>;
 };
-
-let displayHands: DisplayHands = {
-  left: [],
-  leftOpacity: 0,
-  right: [],
-  rightOpacity: 0,
-};
-
 const Sketch = dynamic(import("react-p5"), {
   loading: () => <></>,
   ssr: false,
 });
 
 export const HandSketch = ({ handpose }: Props) => {
-  let handposeHistory: {
-    left: Handpose[];
-    right: Handpose[];
-  } = { left: [], right: [] };
+  let handposeHistory = new HandposeHistory();
+  let displayHands = new DisplayHands();
 
   const debugLog = useRef<{ label: string; value: any }[]>([]);
 
@@ -52,7 +42,7 @@ export const HandSketch = ({ handpose }: Props) => {
       left: Handpose;
       right: Handpose;
     } = convertHandToHandpose(handpose.current);
-    handposeHistory = updateHandposeHistory(rawHands, handposeHistory); //handposeHistoryの更新
+    handposeHistory.update(rawHands);
     const hands: {
       left: Handpose;
       right: Handpose;
@@ -83,27 +73,27 @@ export const HandSketch = ({ handpose }: Props) => {
     );
     p5.pop();
 
-    displayHands = updateDisplayHands({ hands, displayHands });
+    displayHands.update(hands);
 
-    if (displayHands.left.length > 0) {
+    if (displayHands.left.pose.length > 0) {
       p5.push();
-      p5.fill(255, displayHands.leftOpacity);
+      p5.fill(255, displayHands.left.opacity);
       p5.translate(p5.width / 2 - 300, p5.height / 2 + 50);
       dotHand({
         p5,
-        hand: displayHands.left,
+        hand: displayHands.left.pose,
         dotSize: 10,
       });
       p5.pop();
     }
 
-    if (displayHands.right.length > 0) {
+    if (displayHands.right.pose.length > 0) {
       p5.push();
-      p5.fill(255, displayHands.rightOpacity);
+      p5.fill(255, displayHands.right.opacity);
       p5.translate(p5.width / 2 + 300, p5.height / 2 + 50);
       dotHand({
         p5,
-        hand: displayHands.right,
+        hand: displayHands.right.pose,
         dotSize: 10,
       });
       p5.pop();
