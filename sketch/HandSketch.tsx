@@ -21,8 +21,8 @@ const Sketch = dynamic(import("react-p5"), {
 });
 
 export const HandSketch = ({ handpose }: Props) => {
-  let handposeHistory = new HandposeHistory();
-  let displayHands = new DisplayHands();
+  const handposeHistory = new HandposeHistory();
+  const displayHands = new DisplayHands();
 
   const debugLog = useRef<{ label: string; value: any }[]>([]);
 
