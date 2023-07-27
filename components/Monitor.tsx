@@ -18,7 +18,7 @@ type Props = {
   >;
 };
 
-type Handpose = Keypoint[];
+import { Handpose } from "../../@types/global";
 
 const Sketch = dynamic(import("react-p5"), {
   loading: () => <></>,

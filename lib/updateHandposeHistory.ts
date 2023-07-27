@@ -1,6 +1,4 @@
-import { Keypoint } from "@tensorflow-models/hand-pose-detection";
-
-type Handpose = Keypoint[];
+import { Handpose } from "../@types/global";
 
 export const updateHandposeHistory = (
   rawHands: {

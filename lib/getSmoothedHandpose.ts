@@ -1,7 +1,5 @@
-import { Keypoint } from "@tensorflow-models/hand-pose-detection";
 import { calcAverageKeypoints } from "./calculator/calcAverageKeypoints";
-
-type Handpose = Keypoint[];
+import { Handpose } from "../@types/global";
 
 export const getSmoothedHandpose = (
   rawHands: {

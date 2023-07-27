@@ -1,14 +1,4 @@
-import { Keypoint } from "@tensorflow-models/hand-pose-detection";
-
-type Handpose = Keypoint[];
-type DevidedHandpose = {
-  wrist: Keypoint;
-  thumb: Keypoint[];
-  index: Keypoint[];
-  middle: Keypoint[];
-  ring: Keypoint[];
-  pinky: Keypoint[];
-};
+import { Handpose, DevidedHandpose } from "../../@types/global";
 
 export const divideHandpose = (handpose: Handpose) => {
   let res: DevidedHandpose = {

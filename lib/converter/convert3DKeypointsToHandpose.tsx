@@ -1,6 +1,5 @@
 import { Hand, Keypoint } from "@tensorflow-models/hand-pose-detection";
-
-type Handpose = Keypoint[];
+import { Handpose } from "../../@types/global";
 
 export const convert3DKeypointsToHandpose = (hands: Hand[]) => {
   const shapedHands: {

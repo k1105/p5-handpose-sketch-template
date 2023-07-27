@@ -2,14 +2,12 @@ import dynamic from "next/dynamic";
 import p5Types from "p5";
 import { MutableRefObject, useRef, useState } from "react";
 import { Hand } from "@tensorflow-models/hand-pose-detection";
-import { Keypoint } from "@tensorflow-models/hand-pose-detection";
 import { convertHandToHandpose } from "../lib/converter/convertHandToHandpose";
+import { Handpose } from "../@types/global";
 
 type Props = {
   handpose: MutableRefObject<Hand[]>;
 };
-
-type Handpose = Keypoint[];
 
 const Sketch = dynamic(import("react-p5"), {
   loading: () => <></>,

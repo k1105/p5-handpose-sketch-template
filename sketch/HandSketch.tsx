@@ -4,23 +4,24 @@ import { MutableRefObject, useRef } from "react";
 import { Hand } from "@tensorflow-models/hand-pose-detection";
 import { getSmoothedHandpose } from "../lib/getSmoothedHandpose";
 import { updateHandposeHistory } from "../lib/updateHandposeHistory";
-import { Keypoint } from "@tensorflow-models/hand-pose-detection";
 import { convertHandToHandpose } from "../lib/converter/convertHandToHandpose";
 import { dotHand } from "../lib/p5/dotHand";
 import { isFront } from "../lib/calculator/isFront";
 import { Monitor } from "../components/Monitor";
 import { Recorder } from "../components/Recorder";
+import { Handpose, DisplayHands } from "../@types/global";
+import { updateDisplayHands } from "../lib/calculator/updateDisplayHands";
 
 type Props = {
   handpose: MutableRefObject<Hand[]>;
 };
 
-let leftHand: Keypoint[] = [];
-let rightHand: Keypoint[] = [];
-let leftHandOpacity: number = 0;
-let rightHandOpacity: number = 0;
-
-type Handpose = Keypoint[];
+let displayHands: DisplayHands = {
+  left: [],
+  leftOpacity: 0,
+  right: [],
+  rightOpacity: 0,
+};
 
 const Sketch = dynamic(import("react-p5"), {
   loading: () => <></>,
@@ -81,39 +82,28 @@ export const HandSketch = ({ handpose }: Props) => {
       p5.height / 2
     );
     p5.pop();
-    if (hands.left.length > 0) {
-      leftHand = hands.left;
-      leftHandOpacity = Math.min(255, leftHandOpacity + 255 / 10);
-    } else {
-      leftHandOpacity = Math.max(0, leftHandOpacity - 255 / 10);
-    }
 
-    if (leftHand.length > 0) {
+    displayHands = updateDisplayHands({ hands, displayHands });
+
+    if (displayHands.left.length > 0) {
       p5.push();
-      p5.fill(255, leftHandOpacity);
+      p5.fill(255, displayHands.leftOpacity);
       p5.translate(p5.width / 2 - 300, p5.height / 2 + 50);
       dotHand({
         p5,
-        hand: leftHand,
+        hand: displayHands.left,
         dotSize: 10,
       });
       p5.pop();
     }
 
-    if (hands.right.length > 0) {
-      rightHand = hands.right;
-      rightHandOpacity = Math.min(255, rightHandOpacity + 255 / 10);
-    } else {
-      rightHandOpacity = Math.max(0, rightHandOpacity - 255 / 10);
-    }
-
-    if (rightHand.length > 0) {
+    if (displayHands.right.length > 0) {
       p5.push();
-      p5.fill(255, rightHandOpacity);
+      p5.fill(255, displayHands.rightOpacity);
       p5.translate(p5.width / 2 + 300, p5.height / 2 + 50);
       dotHand({
         p5,
-        hand: rightHand,
+        hand: displayHands.right,
         dotSize: 10,
       });
       p5.pop();
