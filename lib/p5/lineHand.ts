@@ -1,6 +1,4 @@
-import { Keypoint } from "@tensorflow-models/hand-pose-detection";
 import p5Types from "p5";
-
 import { Handpose } from "../../@types/global";
 
 type Props = {
