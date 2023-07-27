@@ -5,7 +5,7 @@ import { Hand } from "@tensorflow-models/hand-pose-detection";
 import { getSmoothedHandpose } from "../lib/getSmoothedHandpose";
 import { convertHandToHandpose } from "../lib/converter/convertHandToHandpose";
 import { dotHand } from "../lib/p5/dotHand";
-import { isFront } from "../lib/calculator/isFront";
+import { isFront } from "../lib/detector/isFront";
 import { Monitor } from "../components/Monitor";
 import { Recorder } from "../components/Recorder";
 import { Handpose } from "../@types/global";
