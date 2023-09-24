@@ -154,15 +154,6 @@ export const Monitor = ({ handpose, debugLog }: Props) => {
               audio={false}
               screenshotFormat="image/jpeg"
             />
-          </div>
-          <div
-            style={{
-              position: "absolute",
-              right: 30,
-              top: 30,
-              zIndex: 1,
-            }}
-          >
             <div ref={logRef} style={{ fontSize: "0.8rem" }} />
           </div>
           <div style={{ zIndex: 10 }}>
