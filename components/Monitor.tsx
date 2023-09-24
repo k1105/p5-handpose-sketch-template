@@ -27,8 +27,6 @@ const Sketch = dynamic(import("react-p5"), {
 
 export const Monitor = ({ handpose, debugLog }: Props) => {
   const logRef = useRef<HTMLDivElement>(null);
-  const gainValueRef = useRef<HTMLParagraphElement>(null);
-  const sliderRef = useRef<HTMLInputElement>(null);
 
   const [visibility, setVisibility] = useState<boolean>(false);
   const [helperVisibility, setHelperVisibility] = useState<boolean>(true);
@@ -66,7 +64,6 @@ export const Monitor = ({ handpose, debugLog }: Props) => {
     p5.stroke(220);
     p5.fill(255);
     p5.strokeWeight(10);
-    sliderRef.current!.value = "8";
   };
 
   const draw = (p5: p5Types) => {
@@ -166,11 +163,6 @@ export const Monitor = ({ handpose, debugLog }: Props) => {
               zIndex: 1,
             }}
           >
-            <div>
-              <div style={{ width: 300, height: 225 }} />
-              <p ref={gainValueRef} />
-              <input type="range" min="1" max="30" ref={sliderRef} />
-            </div>
             <div ref={logRef} style={{ fontSize: "0.8rem" }} />
           </div>
           <div style={{ zIndex: 10 }}>
