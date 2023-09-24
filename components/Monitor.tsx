@@ -1,9 +1,9 @@
 import dynamic from "next/dynamic";
 import p5Types from "p5";
-import { MutableRefObject, useRef, useState } from "react";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { Hand } from "@tensorflow-models/hand-pose-detection";
 import { resizeHandpose } from "../lib/converter/resizeHandpose";
-import { Handpose } from "../@types/global";
+import { Keypoint } from "@tensorflow-models/hand-pose-detection";
 import { convertHandToHandpose } from "../lib/converter/convertHandToHandpose";
 import Webcam from "react-webcam";
 import { lineHand } from "../lib/p5/lineHand";
@@ -18,6 +18,8 @@ type Props = {
   >;
 };
 
+type Handpose = Keypoint[];
+
 const Sketch = dynamic(import("react-p5"), {
   loading: () => <></>,
   ssr: false,
@@ -25,7 +27,35 @@ const Sketch = dynamic(import("react-p5"), {
 
 export const Monitor = ({ handpose, debugLog }: Props) => {
   const logRef = useRef<HTMLDivElement>(null);
-  const [debugVisibility, setDebugVisibility] = useState<boolean>(false);
+  const gainValueRef = useRef<HTMLParagraphElement>(null);
+  const sliderRef = useRef<HTMLInputElement>(null);
+
+  const [visibility, setVisibility] = useState<boolean>(false);
+  const [helperVisibility, setHelperVisibility] = useState<boolean>(true);
+  const visibilityRef = useRef<boolean>(false);
+  const helperVisibilityRef = useRef<boolean>(true);
+  visibilityRef.current = visibility;
+  helperVisibilityRef.current = helperVisibility;
+
+  useEffect(() => {
+    const handler = (event: KeyboardEvent) => {
+      if (event.code == "KeyC") {
+        setVisibility(!visibilityRef.current);
+      } else if (event.code == "KeyV") {
+        const body = document.body;
+        if (body.style.cursor == "none") {
+          body.style.cursor = "default";
+        } else {
+          body.style.cursor = "none";
+        }
+      } else if (event.code == "KeyH") {
+        setHelperVisibility(!helperVisibilityRef.current);
+      }
+    };
+    addEventListener("keydown", handler);
+
+    return () => removeEventListener("keydown", handler);
+  }, []);
 
   const preload = (p5: p5Types) => {
     // 画像などのロードを行う
@@ -36,18 +66,17 @@ export const Monitor = ({ handpose, debugLog }: Props) => {
     p5.stroke(220);
     p5.fill(255);
     p5.strokeWeight(10);
+    sliderRef.current!.value = "8";
   };
 
   const draw = (p5: p5Types) => {
     p5.clear();
 
-    if (logRef.current !== null) {
-      //ログ情報の描画
-      logRef.current.innerHTML = "";
-      for (const log of debugLog.current) {
-        logRef.current.innerHTML +=
-          "<p>" + log.label + " : " + String(log.value) + "</p>";
-      }
+    //ログ情報の描画
+    logRef.current!.innerHTML = "";
+    for (const log of debugLog.current) {
+      logRef.current!.innerHTML +=
+        "<p>" + log.label + " : " + String(log.value) + "</p>";
     }
 
     const rawHands: {
@@ -89,36 +118,29 @@ export const Monitor = ({ handpose, debugLog }: Props) => {
 
   return (
     <>
-      <div style={{ position: "absolute", top: 0, left: 0, zIndex: 99 }}>
-        <button
-          onClick={() => {
-            setDebugVisibility(!debugVisibility);
-          }}
+      {helperVisibility && (
+        <p
           style={{
             position: "absolute",
-            top: "30px",
-            left: "30px",
-            width: "100px",
-            height: "30px",
-            background: !debugVisibility ? "rgba(0,0,0,0)" : "#fff",
-            border: "1px solid #ffffff",
-            color: debugVisibility ? "#011960" : "#fff",
-            borderRadius: "5px",
+            bottom: 5,
+            left: 10,
+            fontSize: "0.8rem",
           }}
         >
-          {!debugVisibility ? "Show Monitor" : "Hide Monitor"}
-        </button>
-        {debugVisibility && (
-          <>
-            <Sketch
-              preload={preload}
-              setup={setup}
-              draw={draw}
-              windowResized={windowResized}
-            />
-          </>
-        )}
-        {debugVisibility && (
+          [h] show / hide helper (this line) | [v] show / hide cursor | [c] show
+          / hide monitor
+        </p>
+      )}
+
+      {visibility && (
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            zIndex: 99,
+          }}
+        >
           <div
             style={{
               position: "absolute",
@@ -135,10 +157,32 @@ export const Monitor = ({ handpose, debugLog }: Props) => {
               audio={false}
               screenshotFormat="image/jpeg"
             />
+          </div>
+          <div
+            style={{
+              position: "absolute",
+              right: 30,
+              top: 30,
+              zIndex: 1,
+            }}
+          >
+            <div>
+              <div style={{ width: 300, height: 225 }} />
+              <p ref={gainValueRef} />
+              <input type="range" min="1" max="30" ref={sliderRef} />
+            </div>
             <div ref={logRef} style={{ fontSize: "0.8rem" }} />
           </div>
-        )}
-      </div>
+          <div style={{ zIndex: 10 }}>
+            <Sketch
+              preload={preload}
+              setup={setup}
+              draw={draw}
+              windowResized={windowResized}
+            />
+          </div>
+        </div>
+      )}
     </>
   );
 };
