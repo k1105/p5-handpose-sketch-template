@@ -7,7 +7,7 @@ import { convertHandToHandpose } from "../lib/converter/convertHandToHandpose";
 import { dotHand } from "../lib/p5/dotHand";
 import { isFront } from "../lib/detector/isFront";
 import { Monitor } from "../components/Monitor";
-import { Recorder } from "../components/Recorder";
+// import { Recorder } from "../components/Recorder";
 import { Handpose } from "../@types/global";
 import { DisplayHands } from "../lib/DisplayHandsClass";
 import { HandposeHistory } from "../lib/HandposeHitsoryClass";
@@ -107,7 +107,7 @@ export const HandSketch = ({ handpose }: Props) => {
   return (
     <>
       <Monitor handpose={handpose} debugLog={debugLog} />
-      <Recorder handpose={handpose} />
+      {/* <Recorder handpose={handpose} /> */}
       <Sketch
         preload={preload}
         setup={setup}
