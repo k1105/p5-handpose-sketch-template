@@ -7,22 +7,26 @@ import { convertHandToHandpose } from "../lib/converter/convertHandToHandpose";
 import { dotHand } from "../lib/p5/dotHand";
 import { isFront } from "../lib/detector/isFront";
 import { Monitor } from "../components/Monitor";
-// import { Recorder } from "../components/Recorder";
+import { Recorder } from "../components/Recorder";
 import { Handpose } from "../@types/global";
 import { DisplayHands } from "../lib/DisplayHandsClass";
 import { HandposeHistory } from "../lib/HandposeHitsoryClass";
 
 type Props = {
   handpose: MutableRefObject<Hand[]>;
+  isLost: MutableRefObject<boolean>;
 };
 const Sketch = dynamic(import("react-p5"), {
   loading: () => <></>,
   ssr: false,
 });
 
-export const HandSketch = ({ handpose }: Props) => {
+export const HandSketch = ({ handpose, isLost }: Props) => {
   const handposeHistory = new HandposeHistory();
   const displayHands = new DisplayHands();
+  const download = useRef<boolean>(false);
+  const recordedDataRef = useRef<{ left: number[]; right: number[] }[]>([]);
+  const archiveRef = useRef<{ left: number[]; right: number[] }[]>([]);
 
   const debugLog = useRef<{ label: string; value: any }[]>([]);
 
@@ -75,6 +79,14 @@ export const HandSketch = ({ handpose }: Props) => {
 
     displayHands.update(hands);
 
+    Recorder(
+      isLost.current,
+      recordedDataRef,
+      archiveRef,
+      hands,
+      download.current
+    );
+
     if (displayHands.left.pose.length > 0) {
       p5.push();
       p5.fill(255, displayHands.left.opacity);
@@ -106,8 +118,7 @@ export const HandSketch = ({ handpose }: Props) => {
 
   return (
     <>
-      <Monitor handpose={handpose} debugLog={debugLog} />
-      {/* <Recorder handpose={handpose} /> */}
+      <Monitor handpose={handpose} debugLog={debugLog} download={download} />
       <Sketch
         preload={preload}
         setup={setup}

@@ -13,6 +13,7 @@ export default function App() {
   const requestRef = useRef<null | number>(null);
   const [ready, setReady] = useState<boolean>(false);
   const lostCountRef = useRef(0);
+  const isLost = useRef<boolean>(true);
   const sketchContainerRef = useRef<HTMLDivElement>(null);
   // const timer = 120000;
 
@@ -32,12 +33,14 @@ export default function App() {
         ) {
           predictionsRef.current = predictions;
           lostCountRef.current = 0;
+          isLost.current = false;
         } else {
           lostCountRef.current++;
         }
 
         if (lostCountRef.current > 5) {
           predictionsRef.current = [];
+          isLost.current = true;
         }
       }
     }
@@ -83,7 +86,7 @@ export default function App() {
       {ready && (
         <>
           <div ref={sketchContainerRef}>
-            <HandSketch handpose={predictionsRef} />
+            <HandSketch handpose={predictionsRef} isLost={isLost} />
           </div>
         </>
       )}

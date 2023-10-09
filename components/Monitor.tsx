@@ -16,6 +16,7 @@ type Props = {
       value: any;
     }[]
   >;
+  download: MutableRefObject<boolean>;
 };
 
 type Handpose = Keypoint[];
@@ -25,7 +26,7 @@ const Sketch = dynamic(import("react-p5"), {
   ssr: false,
 });
 
-export const Monitor = ({ handpose, debugLog }: Props) => {
+export const Monitor = ({ handpose, debugLog, download }: Props) => {
   const logRef = useRef<HTMLDivElement>(null);
 
   const [visibility, setVisibility] = useState<boolean>(false);
@@ -34,6 +35,7 @@ export const Monitor = ({ handpose, debugLog }: Props) => {
   const helperVisibilityRef = useRef<boolean>(true);
   visibilityRef.current = visibility;
   helperVisibilityRef.current = helperVisibility;
+  const downloadButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
@@ -155,6 +157,19 @@ export const Monitor = ({ handpose, debugLog }: Props) => {
               screenshotFormat="image/jpeg"
             />
             <div ref={logRef} style={{ fontSize: "0.8rem" }} />
+          </div>
+          <div>
+            <button
+              onClick={() => {
+                download.current = !download.current;
+                downloadButtonRef.current!.innerText = download.current
+                  ? "Disable Download"
+                  : "Enable Download";
+              }}
+              ref={downloadButtonRef}
+            >
+              Enable Download
+            </button>
           </div>
           <div style={{ zIndex: 10 }}>
             <Sketch
